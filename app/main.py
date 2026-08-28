@@ -1,7 +1,8 @@
 from fastapi import FastAPI
+
+from app.api.endpoints.auth import router as auth_router
 from app.api.endpoints.charity_project import router as charity_router
 from app.api.endpoints.donation import router as donation_router
-from app.api.endpoints.auth import router as auth_router  # кастомный auth
 
 app = FastAPI(title="QRKot")
 

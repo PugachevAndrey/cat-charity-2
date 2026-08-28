@@ -1,9 +1,10 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.core.db import get_async_session
+
 from app.core.config import settings
+from app.core.db import get_async_session
 from app.crud.user import get_user_by_email
 from app.models.user import User
 

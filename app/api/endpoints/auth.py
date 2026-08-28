@@ -1,10 +1,12 @@
+from datetime import timedelta
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.core.db import get_async_session
-from app.schemas.user import UserCreate, UserRead, LoginRequest
-from app.crud.user import get_user_by_email, create_user
-from app.core.security import verify_password, create_access_token
-from datetime import timedelta
+from app.core.security import create_access_token, verify_password
+from app.crud.user import create_user, get_user_by_email
+from app.schemas.user import LoginRequest, UserCreate, UserRead
 
 router = APIRouter()
 

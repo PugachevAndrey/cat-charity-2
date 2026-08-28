@@ -1,21 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime
 
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.validators import check_name_duplicate, check_project_before_edit
+from app.core.constants import (
+    ERROR_FULL_AMOUNT_LESS_THAN_INVESTED,
+    ERROR_PROJECT_HAS_INVESTMENTS,
+    HTTP_400_BAD_REQUEST,
+)
 from app.core.db import get_async_session
+from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
 from app.schemas.charity_project import (
     CharityProjectCreate,
-    CharityProjectUpdate,
     CharityProjectDB,
+    CharityProjectUpdate,
 )
-from app.api.validators import check_name_duplicate, check_project_before_edit
 from app.services.investment import invest
-from app.core.constants import (
-    HTTP_400_BAD_REQUEST,
-    ERROR_PROJECT_HAS_INVESTMENTS,
-    ERROR_FULL_AMOUNT_LESS_THAN_INVESTED,
-)
-from app.core.user import current_superuser
 
 router = APIRouter()
 
@@ -23,7 +25,7 @@ router = APIRouter()
 @router.post("/", response_model=CharityProjectDB)
 async def create_project(
     project_in: CharityProjectCreate,
-    session=Depends(get_async_session),
+    session: AsyncSession = Depends(get_async_session),
     _user=Depends(current_superuser),
 ):
     await check_name_duplicate(project_in.name, session)
@@ -36,7 +38,7 @@ async def create_project(
 
 @router.get("/", response_model=list[CharityProjectDB])
 async def get_all_projects(
-    session=Depends(get_async_session),
+    session: AsyncSession = Depends(get_async_session),
 ):
     projects = await charity_project_crud.get_multi(session)
     return [CharityProjectDB.model_validate(project) for project in projects]
@@ -46,7 +48,7 @@ async def get_all_projects(
 async def update_project(
     project_id: int,
     project_update: CharityProjectUpdate,
-    session=Depends(get_async_session),
+    session: AsyncSession = Depends(get_async_session),
     _user=Depends(current_superuser),
 ):
     project = await check_project_before_edit(project_id, session)
@@ -77,7 +79,7 @@ async def update_project(
 @router.delete("/{project_id}", response_model=CharityProjectDB)
 async def delete_project(
     project_id: int,
-    session=Depends(get_async_session),
+    session: AsyncSession = Depends(get_async_session),
     _user=Depends(current_superuser),
 ):
     project = await check_project_before_edit(project_id, session)
