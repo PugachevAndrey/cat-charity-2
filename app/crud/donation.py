@@ -1,10 +1,10 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+from pydantic import BaseModel
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import CRUDBase
 from app.models.donation import Donation
 from app.schemas.donation import DonationCreate
-from pydantic import BaseModel
 
 
 class CRUDDonation(CRUDBase[Donation, DonationCreate, BaseModel]):

@@ -1,8 +1,8 @@
-from typing import TypeVar, Generic, Type
+from typing import Generic, Type, TypeVar
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
 from pydantic import BaseModel
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import Base
 

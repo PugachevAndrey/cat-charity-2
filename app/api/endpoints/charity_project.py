@@ -4,19 +4,15 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.validators import check_name_duplicate, check_project_before_edit
-from app.core.constants import (
-    ERROR_FULL_AMOUNT_LESS_THAN_INVESTED,
-    ERROR_PROJECT_HAS_INVESTMENTS,
-    HTTP_400_BAD_REQUEST,
-)
+from app.core.constants import (ERROR_FULL_AMOUNT_LESS_THAN_INVESTED,
+                                ERROR_PROJECT_HAS_INVESTMENTS,
+                                HTTP_400_BAD_REQUEST)
 from app.core.db import get_async_session
 from app.core.user import current_superuser
 from app.crud.charity_project import charity_project_crud
-from app.schemas.charity_project import (
-    CharityProjectCreate,
-    CharityProjectDB,
-    CharityProjectUpdate,
-)
+from app.schemas.charity_project import (CharityProjectCreate,
+                                         CharityProjectDB,
+                                         CharityProjectUpdate)
 from app.services.investment import invest
 
 router = APIRouter()

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Text, Integer
+from sqlalchemy import Column, Integer, String, Text
 
 from app.models.base import InvestmentBase
 

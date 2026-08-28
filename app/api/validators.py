@@ -1,18 +1,14 @@
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.constants import (ERROR_DONATION_NOT_FOUND, ERROR_PROJECT_CLOSED,
+                                ERROR_PROJECT_NAME_EXISTS,
+                                ERROR_PROJECT_NOT_FOUND, HTTP_400_BAD_REQUEST,
+                                HTTP_404_NOT_FOUND)
 from app.crud.charity_project import charity_project_crud
 from app.crud.donation import donation_crud
 from app.models.charity_project import CharityProject
 from app.models.donation import Donation
-from app.core.constants import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND,
-    ERROR_PROJECT_NAME_EXISTS,
-    ERROR_PROJECT_NOT_FOUND,
-    ERROR_PROJECT_CLOSED,
-    ERROR_DONATION_NOT_FOUND,
-)
 
 
 async def check_name_duplicate(

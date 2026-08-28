@@ -1,5 +1,5 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-from sqlalchemy import Integer, String, Boolean, Column
+from sqlalchemy import Boolean, Column, Integer, String
 
 from app.core.db import Base
 
