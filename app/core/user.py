@@ -21,18 +21,20 @@ async def get_current_user(
     Если токен невалиден или пользователь не найден – возвращает 401.
     """
     try:
-        payload = jwt.decode(token, settings.secret, algorithms=["HS256"])
-        email = payload.get("sub")
-        if not email:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token"
-            )
-    except JWTError:
+        payload = jwt.decode(token, settings.secret, algorithms=("HS256",))
+    except JWTError as error:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token"
+        ) from error
+
+    email = payload.get("sub")
+    if not email:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token"
         )
+
     user = await get_user_by_email(session, email)
     if not user:
         raise HTTPException(
@@ -56,6 +58,7 @@ async def get_current_superuser(
             detail="Not enough permissions"
         )
     return current_user
+
 
 current_user = get_current_user
 current_superuser = get_current_superuser

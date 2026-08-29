@@ -5,14 +5,14 @@ from passlib.context import CryptContext
 
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=("bcrypt",), deprecated="auto")
 
 
 def create_access_token(
-        data: dict, expires_delta: timedelta | None = None
+        payload_data: dict, expires_delta: timedelta | None = None
 ) -> str:
     """Создаёт JWT-токен с указанными данными и временем жизни."""
-    to_encode = data.copy()
+    to_encode = dict(payload_data)
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=30))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.secret, algorithm="HS256")
